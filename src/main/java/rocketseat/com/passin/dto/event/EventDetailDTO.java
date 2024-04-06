@@ -1,3 +1,5 @@
+// PADRONIZAÇÃO DOS DETALHES DO EVENTO
+
 package rocketseat.com.passin.dto.event;
 
 public record EventDetailDTO(

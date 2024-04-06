@@ -1,3 +1,5 @@
+// OBJETO A SER RETORNADO COMO RESPOSTA
+
 package rocketseat.com.passin.dto.event;
 
 import rocketseat.com.passin.domain.event.Event;
