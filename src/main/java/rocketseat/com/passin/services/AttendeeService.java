@@ -16,14 +16,16 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AttendeeService {
-    private AttendeeRepository attendeeRepository;
-    private CheckInRepository checkInRepository;
+    private final AttendeeRepository attendeeRepository;
+    private final CheckInRepository checkInRepository;
 
+    // LISTAGEM DIRETA DO BANCO
     public List<Attendee> getAllAttendeesFromEvent(String eventId) {
        return this.attendeeRepository.findAllByEventId(eventId);
     }
 
-    public AttendeesListResponseDTO getEventsAttendee(String eventId) {
+    // LISTA OS PARTICIPANTES JÁ COM TRATAMENTO DE INFORMAÇÕES JUNTO DO DTO
+    public AttendeesListResponseDTO getEventAttendees(String eventId) {
         List<Attendee> attendeeList = this.getAllAttendeesFromEvent(eventId);
 
         List<AttendeeDetailDTO> attendeeDetailDTOList = attendeeList.stream().map(attendee -> {
