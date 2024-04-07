@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AttendeeService {
     private final AttendeeRepository attendeeRepository;
-    private final CheckInRepository checkInRepository;
+    private final CheckInService checkInService;
 
     // LISTAGEM DIRETA DO BANCO
     public List<Attendee> getAllAttendeesFromEvent(String eventId) {
@@ -34,7 +34,7 @@ public class AttendeeService {
         List<Attendee> attendeeList = this.getAllAttendeesFromEvent(eventId);
 
         List<AttendeeDetailDTO> attendeeDetailDTOList = attendeeList.stream().map(attendee -> {
-            Optional<CheckIn> checkIn = this.checkInRepository.findByAttendeeId(attendee.getId());
+            Optional<CheckIn> checkIn = this.checkInService.getCheckIn(attendee.getId());
             LocalDateTime checkedInAt = checkIn.isPresent() ? checkIn.get().getCreatedAt() : null;
             return new AttendeeDetailDTO(
                     attendee.getId(),
@@ -60,8 +60,23 @@ public class AttendeeService {
         return newAttendee;
     }
 
+    // GET ATTENDEE
+
+    private Attendee getAttendee(String attendeId) {
+        return this.attendeeRepository.findById(attendeId).orElseThrow(() -> new AttendeeNotFoundException("Attendee not found with ID: " + attendeId));
+    }
+
+    // CHECK IN ATTENDEE
+
+    public void checkInAttendee(String attendeeId) {
+        Attendee attendee = this.getAttendee(attendeeId);
+        this.checkInService.registerCheckIn(attendee);
+    }
+
+    // GET ATTENDEE BADGE
+
     public AttendeeBadgeResponseDTO getAttendeeBadge(String attendeeId, UriComponentsBuilder uriComponentsBuilder) {
-        Attendee attendee = this.attendeeRepository.findById(attendeeId).orElseThrow(() -> new AttendeeNotFoundException("Attendee not found with ID: " + attendeeId));
+        Attendee attendee = this.getAttendee(attendeeId);
 
         var uri = uriComponentsBuilder.path("/attendees/{attendeeId}/check-in").buildAndExpand(attendeeId).toUri().toString();
 

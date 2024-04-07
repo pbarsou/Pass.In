@@ -1,4 +1,0 @@
-/*C2*/SET SCHEMA PUBLIC
-SET SCHEMA "PUBLIC"
-INSERT INTO ATTENDEES VALUES('fd763f99-2fab-49b2-8ee5-324718fbceda','Pablo Barbosa','teste@gmail.com','4dafc975-3d4e-440d-abca-d8dd6fe8c646','2024-04-07 17:01:30.068117')
-COMMIT

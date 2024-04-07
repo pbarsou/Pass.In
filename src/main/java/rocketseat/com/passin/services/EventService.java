@@ -50,10 +50,11 @@ public class EventService {
         // verificando se o participante já está inscrito no evento
         this.attendeeService.verifyAttendeeSubscription(attendeeRequestDTO.email(), eventId);
 
+        // verificando se ainda tem vagas disponíveis no evento
+
         Event event = getEventById(eventId);
         List<Attendee> attendeesList = this.attendeeService.getAllAttendeesFromEvent(eventId);
 
-        // verificando se ainda tem vagas disponíveis no evento
         if(event.getMaximumAttendees() <= attendeesList.size()) throw new EventFullException("Event is full.");
 
         Attendee newAttendee = new Attendee();
